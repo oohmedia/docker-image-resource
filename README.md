@@ -9,16 +9,20 @@ Note: docker registry must be [v2](https://docs.docker.com/registry/spec/api/).
 * `repository`: *Required.* The name of the repository, e.g.
 `concourse/docker-image-resource`.
 
-  Note: When configuring a private registry which requires a login, the 
-  registry's address must contain at least one '.' e.g. `registry.local` 
+  Note: When configuring a private registry which requires a login, the
+  registry's address must contain at least one '.' e.g. `registry.local`
   or contain the port (e.g. `registry:443` or `registry:5000`).
   Otherwise docker hub will be used.
-  
+
   Note: When configuring a private registry **using a non-root CA**,
   you must include the port (e.g. :443 or :5000) even though the docker CLI
   does not require it.
 
 * `tag`: *Optional.* The tag to track. Defaults to `latest`.
+
+* `docker_username`: *Optional.* The username to authenticate with docker to pull images.
+
+* `docker_password`: *Optional.* The password to use when authenticating with docker pull.
 
 * `username`: *Optional.* The username to authenticate with when pushing.
 
@@ -161,12 +165,12 @@ version is the image's digest.
 
 * `build_args`: *Optional.* A map of Docker build-time variables. These will be
   available as environment variables during the Docker build.
-  
+
   While not stored in the image layers, they are stored in image metadata and
   so it is recommend to avoid using these to pass secrets into the build
   context. In multi-stage builds `ARG`s in earlier stages will not be copied
   to the later stages, or in the metadata of the final stage.
-  
+
   The
   [build metadata](https://concourse-ci.org/implementing-resource-types.html#resource-metadata)
   environment variables provided by Concourse will be expanded in the values
@@ -272,7 +276,7 @@ version is the image's digest.
   prepended with this string. This is useful for adding `v` in front of version
   numbers.
 
-* `target_name`: *Optional.*  Specify the name of the target build stage. 
+* `target_name`: *Optional.*  Specify the name of the target build stage.
   Only supported for multi-stage Docker builds
 
 

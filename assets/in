@@ -26,6 +26,8 @@ insecure_registries=$(jq -r '.source.insecure_registries // [] | join(" ")' < $p
 
 registry_mirror=$(jq -r '.source.registry_mirror // ""' < $payload)
 
+docker_username=$(jq -r '.source.docker_username // ""' < $payload)
+docker_password=$(jq -r '.source.docker_password // ""' < $payload)
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
 repository="$(jq -r '.source.repository // ""' < $payload)"
@@ -64,6 +66,7 @@ if [ "$skip_download" = "false" ]; then
     "$insecure_registries" \
     "$registry_mirror"
 
+  log_in "$docker_username" "$docker_password"
   log_in "$username" "$password" "$registry"
 
   docker_pull "$image_name"
